@@ -7,6 +7,5 @@ streamlit==1.25.0
 wolframalpha
 google-api-python-client
 openai
-os
 tempfile
 streamlit.components.v1
