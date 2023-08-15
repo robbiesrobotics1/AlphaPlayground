@@ -1,0 +1,5 @@
+apikey='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'
+WOLFRAM_ALPHA_APPID='3PKQ94-XQ8J8EYXQV'
+google_api_key ='AIzaSyDnazOYWZd-8yafnCH4LwAJ-10z3xVcd2k'
+pineconekey = '19e1c16f-3d84-433b-b9dc-292aedb1aee9'
+pineconenv='asia-southeast1-gcp-free'

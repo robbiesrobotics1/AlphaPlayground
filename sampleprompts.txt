@@ -1,0 +1,5 @@
+Basic Data Viz Prompts for Visuals
+    - Which Book Has The Highest Rating Count?
+    - Tabulate the first 5 books. Include the title and rating count columns only
+    - Create a bar graph on the first 5 books. Use the book titles as the column and the rating count as the data values.
+    - Create a line graph of the first 5 books. Use the book titles as the column and rating count as the data values

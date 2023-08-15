@@ -1,0 +1,6 @@
+filetype==1.2.0
+langchain==0.0.265
+pandas==2.0.3
+pinecone_client==2.2.2
+pygwalker==0.3.2
+streamlit==1.25.0
