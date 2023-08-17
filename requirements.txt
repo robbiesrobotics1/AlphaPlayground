@@ -4,3 +4,9 @@ pandas==2.0.3
 pinecone_client==2.2.2
 pygwalker==0.3.2
 streamlit==1.25.0
+wolframalpha
+google-api-python-client
+openai
+unstructured
+tabulate
+tiktoken
