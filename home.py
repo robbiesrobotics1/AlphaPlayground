@@ -1,20 +1,23 @@
 import streamlit as st
+from PIL import Image
+
+im = Image.open("alpha.png")
 
 st.set_page_config(
-    page_title="Calcifire Consulting - Alpha Playground",
-    page_icon="😎",
+    page_title="Calcifire Consulting - AlphaChat",
+    page_icon=im,
+    layout="wide"
 )
-
 st.write("# Welcome to Alpha Playground! 👋")
 
-st.sidebar.success("Select from one of the demos above.")
+st.sidebar.success("Login and select the demo from above.")
 
 st.markdown(
     """
     Alpha Playground is a live demo of our app framework built specifically for
     Intelligent Systems and Business Solutions.
     
-    **👈 Select a demo from the sidebar** to see some examples
+    👈 Login and select the demo from the sidebar to see some examples
     of what Alpha can do!
     ### Want to learn more?
     - Check out [Calcifire Consulting](https://calcifireconsulting.com)
@@ -23,9 +26,10 @@ st.markdown(
         forums](https://discuss.streamlit.io)
     ### To See more complex demos Like:
     
-    - Voice Chat Feature
+    - Voice Chat
     - Voice Commands
     - Agent TTS (Text to Speech)
+    - Computer Vision
     
     contact us at info@calcifireconsulting.com
 """
