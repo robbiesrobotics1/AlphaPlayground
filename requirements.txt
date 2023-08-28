@@ -13,5 +13,4 @@ unstructured
 tabulate
 tiktoken
 streamlit_chat
-ydata-profiling
 streamlit-pandas-profiling
