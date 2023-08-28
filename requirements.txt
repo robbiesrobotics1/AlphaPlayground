@@ -1,8 +1,8 @@
 os
-filetype==1.2.0
+filetype
 langchain
-pandas==2.0.3
-pinecone_client==2.2.2
+pandas
+pinecone_client
 pygwalker
 streamlit
 wolframalpha
