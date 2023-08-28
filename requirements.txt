@@ -2,9 +2,11 @@ os
 filetype
 langchain
 pandas
+ydata_profiling
 pinecone_client
 pygwalker
 streamlit
+streamlit-pandas-profiling
 wolframalpha
 PIL
 google-api-python-client
@@ -13,5 +15,5 @@ unstructured
 tabulate
 tiktoken
 streamlit_chat
-ydata-profiling
-streamlit-pandas-profiling
+
+
