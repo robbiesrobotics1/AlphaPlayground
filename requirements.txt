@@ -7,7 +7,6 @@ pygwalker
 streamlit
 streamlit-pandas-profiling
 wolframalpha
-PIL
 google-api-python-client
 openai
 unstructured
