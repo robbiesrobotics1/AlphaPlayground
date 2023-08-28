@@ -1,5 +1,6 @@
 import os
 from PIL import Image
+import ydata_profiling
 from streamlit_pandas_profiling import st_profile_report
 import streamlit as st
 import pygwalker as pyg
@@ -149,7 +150,7 @@ with tab2:
             
             
             
- ################### Insights Builder (Advanced DataViz) ###################          
+ ###################Insights Builder (Advanced DataViz) ###################          
 with tab4:         
     csv_file= st.file_uploader("Upload Your CSV")
 
