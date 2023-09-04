@@ -235,7 +235,7 @@ def main():
         with tab2:
             st.title("Basic Graphs")
             #query = st.text_input("Insert your query")
-            query = user_content
+            query = st.text_area("input data query here")
             if st.sidebar.button("Create Chart"):
                 agent3 = create_agent(data)
                 response = query_agent(agent=agent3, query=query)
@@ -310,16 +310,13 @@ def main():
             
  ########################### Zapier OAUTH2 Implementation ###########################
  
-           
-
             # Define your Zapier OAuth2 credentials
         ZAPIER_REDIRECT_URI = "https://calcifireconsulting.com"
 
         # Create a button in the sidebar to activate the agent
-        st.sidebar.markdown(f'[Activate Agent](https://nla.zapier.com/oauth/authorize/?response_type=code&client_id={ZAPIER_CLIENT_ID}&redirect_uri={ZAPIER_REDIRECT_URI}&scope=nla%3Aexposed_actions%3Aexecute)')
-         
-            
+        st.sidebar.markdown(f'[Activate Agent](https://nla.zapier.com/oauth/authorize/?response_type=code&client_id={ZAPIER_CLIENT_ID}&redirect_uri={ZAPIER_REDIRECT_URI}&scope=nla%3Aexposed_actions%3Aexecute)')    
 ###########################################################################################                           
+    
     else:
         st.write("# Welcome to Alpha Playground! 👋")
 
