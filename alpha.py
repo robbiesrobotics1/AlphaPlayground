@@ -40,6 +40,7 @@ st.set_page_config(
 ########### Setup api Keys ###################################
 ZAPIER_CLIENT_SECRET = st.secrets["ZAPIER_CLIENT_SECRET"]
 ZAPIER_CLIENT_ID = st.secrets["ZAPIER_CLIENT_ID"]
+ZAPIER_API_KEY = st.secrets["ZAPIER_API_KEY"]
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 WOLFRAM_ALPHA_APPID = st.secrets["WOLFRAM_ALPHA_APPID"]
