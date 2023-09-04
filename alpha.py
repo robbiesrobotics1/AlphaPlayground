@@ -305,7 +305,20 @@ def main():
             move_focus()
             authenticator.logout('Logout', 'sidebar',) 
             st.sidebar.write("[Terms of Service](https://docs.google.com/document/d/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
-            st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)")  
+            st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)") 
+             
+            
+ ########################### Zapier OAUTH2 Implementation ###########################
+ 
+           
+
+            # Define your Zapier OAuth2 credentials
+        ZAPIER_REDIRECT_URI = "https://calcifireconsulting.com"
+
+        # Create a button in the sidebar to activate the agent
+        st.sidebar.markdown(f'[Activate Agent](https://nla.zapier.com/oauth/authorize/?response_type=code&client_id={ZAPIER_CLIENT_ID}&redirect_uri={ZAPIER_REDIRECT_URI}&scope=nla%3Aexposed_actions%3Aexecute)')
+         
+            
 ###########################################################################################                           
     else:
         st.write("# Welcome to Alpha Playground! 👋")
