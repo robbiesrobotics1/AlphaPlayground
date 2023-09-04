@@ -14,5 +14,5 @@ tabulate
 tiktoken
 streamlit_chat
 streamlit_authenticator==0.1.5
-
+deta
 
