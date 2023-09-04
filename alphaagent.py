@@ -1,13 +1,14 @@
 from langchain import OpenAI
 from langchain.agents import create_pandas_dataframe_agent
 import pandas as pd
-from apikey import apikey
-import os
 import streamlit as st
 import json
 
 
-os.environ['OPENAI_API_KEY'] = apikey
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+WOLFRAM_ALPHA_APPID = st.secrets["WOLFRAM_ALPHA_APPID"]
+GOOGLE_CSE_ID = st.secrets["GOOGLE_CSE_ID"]
 
 
 def create_agent(filename: str):
