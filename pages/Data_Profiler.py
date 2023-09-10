@@ -62,34 +62,34 @@ if authentication_status:
     with ChatBot:
         st.title("Visualize Data With Alpha")
         st.text("Intelligent chatbot with access to your documents. \nUpload a file to get insights")
-        tab2, tab3, tab4 = st.tabs(["Basic Graphs","Data Profiler", "Insights Builder"])
+        tab3, tab4 = st.tabs(["Data Profiler", "Insights Builder"])
 
 
 
 
     ####################  TAB 2 - Dataviz Basic Implementation Tab ########################### 
-    with tab2:
-        st.title("Basic Graphs")
-        st.text("Chart History:")
+#    with tab2:
+#        st.title("Basic Graphs")
+#        st.text("Chart History:")
 
-    if query := st.chat_input("Ask Questions About Your Data"):
-        with tab2:
-            # Create an agent from the CSV file.
-            agent = create_agent(data)
+ #   if query := st.chat_input("Ask Questions About Your Data"):
+  #      with tab2:
+  #          # Create an agent from the CSV file.
+  #          agent = create_agent(data)
 
             # Query the agent.
-            response = query_agent(agent=agent, query=query)
+   #         response = query_agent(agent=agent, query=query)
 
             # Decode the response.
-            decoded_response = decode_response(response)
+   #         decoded_response = decode_response(response)
 
             # Append the decoded response to the session state for chart history
-            st.session_state.tab2_content.append(decoded_response)
+    #        st.session_state.tab2_content.append(decoded_response)
 
             # Display the chart history
-            if st.session_state.tab2_content:
-                for content in st.session_state.tab2_content:
-                    write_response(content)
+    #        if st.session_state.tab2_content:
+     #           for content in st.session_state.tab2_content:
+     #               write_response(content)
 
                     
     #######################################################################################
