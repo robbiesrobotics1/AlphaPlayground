@@ -1,9 +1,6 @@
 filetype
 langchain
 pandas
-sys
-time
-traceback
 plotly
 ydata_profiling
 pinecone_client
