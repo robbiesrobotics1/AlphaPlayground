@@ -72,7 +72,7 @@ if "logger" not in st.session_state:
     st.session_state["logger"] = initialize_logger()
 
 api_key = openai.api_key = st.secrets["OPENAI_API_KEY"]
-csv_file = st.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
+csv_file = st.sidebar.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
 
 if api_key and csv_file:
     api_key = api_key
