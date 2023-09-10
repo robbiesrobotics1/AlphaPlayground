@@ -1,6 +1,11 @@
 filetype
 langchain
 pandas
+logging
+sys
+time
+traceback
+plotly
 ydata_profiling
 pinecone_client
 pygwalker
@@ -15,4 +20,4 @@ tiktoken
 streamlit_chat
 streamlit_authenticator==0.1.5
 deta
-
+chat2plot

@@ -53,7 +53,7 @@ def main():
     
 ################# Initialize Session States #######################################
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo-0613"
+        st.session_state["openai_model"] = "gpt-3.5-turbo"
     if "messages" not in st.session_state:
         st.session_state.messages = []   
 ###################################################################################
@@ -74,23 +74,26 @@ def main():
 
 ######################## Tab1 - AlphaChat ###################################################
        # with tab1:
-            st.title("AlphaChat")
+            st.header("AlphaChat")
             st.text ("Chat History:")
             for i, message in enumerate(st.session_state.messages):
                 nkey = int(i/2)
                 if message["role"] == "user":
-                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key='chat_messages_user_'+str(nkey))
+                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key='chat_messages_user'+str(nkey))
                 else:
                     streamlit_chat.message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114", key='chat_messages_assistant_'+str(nkey))
 
-        if user_content:= st.chat_input("Hello, my name is Alpha. Type your questions here.", key = "main_chat_input"): 
-            #with tab1:
-                nkey = int(len(st.session_state.messages)/2)
-                streamlit_chat.message(user_content, is_user=True,  avatar_style="avataaars", seed="24", key='chat_messages_user_'+str(nkey))
-                st.session_state.messages.append({"role": "user", "content": user_content})
-                assistant_content = complete_messages(0,1)
-                streamlit_chat.message(assistant_content, avatar_style="avataaars-neutral", seed="Aneka114", key='chat_messages_assistant_'+str(nkey))
-                st.session_state.messages.append({"role": "assistant", "content": assistant_content})
+        if user_content := st.chat_input("Hello, my name is Alpha. Type your questions here.", key="main_chat_input"):
+            nkey = int(len(st.session_state.messages) / 2)
+            user_key = 'chat_messages_user_' + str(nkey)
+            assistant_key = 'chat_messages_assistant_' + str(nkey)
+
+            streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24", key=user_key)
+            st.session_state.messages.append({"role": "user", "content": user_content})
+            assistant_content = complete_messages(0, 1)
+            streamlit_chat.message(assistant_content, avatar_style="avataaars-neutral", seed="Aneka114", key=assistant_key)
+            st.session_state.messages.append({"role": "assistant", "content": assistant_content})
+
 ##############################################################################################
         authenticator.logout('Logout', 'sidebar',)
         if st.sidebar.button("Clear Conversation", key='clear_chat_button'):

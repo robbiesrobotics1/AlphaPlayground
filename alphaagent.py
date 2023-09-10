@@ -34,9 +34,9 @@ zapier = ZapierNLAWrapper()
 wolfram = WolframAlphaAPIWrapper()
 search = GoogleSearchAPIWrapper()
 toolkit = ZapierToolkit.from_zapier_nla_wrapper(zapier)
-llm = ChatOpenAI(temperature=0,model="gpt-3.5-turbo", streaming = True)
+llm = ChatOpenAI(temperature=0.7,model="gpt-3.5-turbo", streaming = True)
 llm2 = OpenAI(temperature = 0, streaming= True)
-email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= "zero-shot-react-description", verbose = True,  handle_parsing_errors = True, memory = memory)
+email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = True,  handle_parsing_errors = True, memory = memory)
 calendar_agent =  initialize_agent(toolkit.get_tools(), llm, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
 ###########################################################################################
     
@@ -56,12 +56,12 @@ tools = [
     Tool(
         name="Email Agent",
         func= email_agent.run,
-        description="Useful for checking emails, drafting emails, and sending emails."
+        description="Always use when sending emails. Do Not use the Cc (cc) field for this tool unless specified in prompt."
     ),
     Tool(
         name="Calendar Agent",
         func= calendar_agent.run,
-        description="Useful for checking calendar, user availability, adding meetings and events, and creating new calendars."
+        description="Always use for checking calendar, finding user availability, adding meetings and events."
     ),
 ]
 ###########################################################################################

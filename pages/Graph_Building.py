@@ -48,15 +48,12 @@ elif st.session_state["authentication_status"] is None:
 ################# Initialize Session States #######################################
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo-0613"
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-    # Create session state variables for tabs 2, 3, and 4
 if "tab2_content" not in st.session_state:
     st.session_state.tab2_content = []
 if "tab3_content" not in st.session_state:
     st.session_state.tab3_content = []
 if "tab4_content" not in st.session_state:
-    st.session_state.tab4_content = []    
+    st.session_state.tab4_content = [] 
 ###################################################################################
 if authentication_status:
 
