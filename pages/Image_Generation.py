@@ -46,7 +46,7 @@ elif st.session_state["authentication_status"] is None:
 
 #Main entry point when the user is authenticated
 if authentication_status:
-    number_of_images = st.sidebar.selectbox("Choose Number of Images",("1", "2", "3", "4"))
+    number_of_images = st.sidebar.selectbox("Choose Number of Images",(1, 2, 3, 4))
     image_size = st.sidebar.selectbox("Choose Image Resolution",("256x256", "512x512", "1024x1024"))
     def generate_messages(prompt):
         response = openai.Image.create(
