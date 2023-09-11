@@ -136,7 +136,7 @@ if api_key and csv_file:
         st.session_state.generated.append(res)
 
     def get_text():
-        input_text = st.text_input(f'*{st.session_state["name"]}*''s Prompt', key="input", on_change=submit)
+        input_text = st.chat_input(f'*{st.session_state["name"]}*''s Prompt', key="input", on_submit=submit)
         return input_text
 
     with input_container:
