@@ -1,9 +1,6 @@
 import json
 import logging
-import os
-import subprocess
 import sys
-import time
 from PIL import Image
 import database as db
 import streamlit_authenticator as stauth
@@ -62,7 +59,7 @@ elif st.session_state["authentication_status"] is None:
     st.sidebar.warning('Please enter your username and password') 
 #####################################################################
 
-
+############ Initialize Logger#####################
 def initialize_logger():
     logger = logging.getLogger("root")
     handler = logging.StreamHandler(sys.stdout)
@@ -73,20 +70,16 @@ def initialize_logger():
 
 if "logger" not in st.session_state:
     st.session_state["logger"] = initialize_logger()
+#######################################################
+
 
 api_key = openai.api_key = st.secrets["OPENAI_API_KEY"]
 csv_file = st.sidebar.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
 
-if csv_file is not None:
-    try:
-        # Check if the uploaded file is a valid CSV file
-        df = pd.read_csv(csv_file)
-        # Process the file further
-        st.write("Tabulated Data:")
-        st.write(df.head())
-    except Exception as e:
-        # Handle the exception and provide user feedback
-        st.error(f"An error occurred while processing the uploaded file: {e}")
+if api_key and csv_file:
+    df = pd.read_csv(csv_file)
+    st.write("Tabulated Data:")
+    st.write(df.head())
 
     if "generated" not in st.session_state:
         st.session_state["generated"] = []
@@ -94,7 +87,7 @@ if csv_file is not None:
     if "past" not in st.session_state:
         st.session_state["past"] = []
 
-    st.subheader(f'*{st.session_state["name"]}* Chat History:')
+    st.text(f"{st.session_state['name']}'s Chat History:")
 
     def initialize_c2p():
         st.session_state["chat"] = chat2plot(
@@ -143,7 +136,7 @@ if csv_file is not None:
         st.session_state.generated.append(res)
 
     def get_text():
-        input_text = st.chat_input(f'*{st.session_state["name"]}*''s Prompt', key="input", on_submit=submit)
+        input_text = st.chat_input(f'{st.session_state["name"]}"''s Prompt', key="input", on_submit=submit)
         return input_text
 
     with input_container:
@@ -173,7 +166,7 @@ if csv_file is not None:
                                 language="json",
                             )
                         else:
-                            st.code(json.dumps(config, indent=2), language="english")
+                            st.code(json.dumps(config, indent=2), language="json")
                     with col1:
                         if isinstance(res.figure, Figure):
                             st.plotly_chart(res.figure, use_container_width=True)
@@ -184,4 +177,4 @@ if csv_file is not None:
                         f"Failed to render chart. last message: {res.conversation_history[-1].content}",
                         icon="⚠️",
                     )
-                    # message(res.conversation_history[-1].content, key=str(i))
+                    

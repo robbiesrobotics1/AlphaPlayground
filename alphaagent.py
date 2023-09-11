@@ -39,33 +39,6 @@ llm2 = OpenAI(temperature = 0, streaming= True)
 email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = True,  handle_parsing_errors = True, memory = memory)
 calendar_agent =  initialize_agent(toolkit.get_tools(), llm, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
 ###########################################################################################
-    
-
-######################### Agent Toolkit #################################
-tools = [
-    Tool(
-        name="Google Search",
-        func=search.run,
-        description="Useful for answering questions about current events, people, places."
-    ),
-    Tool(
-        name="Wolfram Search",
-        func=wolfram.run,
-        description="Useful for answering questions about math, science, weather, date, and time."
-    ),
-    Tool(
-        name="Email Agent",
-        func= email_agent.run,
-        description="Always use when sending emails. Do Not use the Cc (cc) field for this tool unless specified in prompt."
-    ),
-    Tool(
-        name="Calendar Agent",
-        func= calendar_agent.run,
-        description="Always use for checking calendar, finding user availability, adding meetings and events."
-    ),
-]
-###########################################################################################
-
 
 def create_agent(filename: str):
     """
@@ -79,13 +52,13 @@ def create_agent(filename: str):
     """
 
     # Create an OpenAI object.
-    llm = OpenAI(temperature=0)
+    llm = llm2
 
     # Read the CSV file into a Pandas DataFrame.
     df = pd.read_csv(filename)
 
     # Create a Pandas DataFrame agent.
-    return create_pandas_dataframe_agent(llm, df, verbose=False)
+    return create_pandas_dataframe_agent(llm, df, verbose=True)
 
 
 def query_agent(agent, query):
@@ -177,19 +150,6 @@ def write_response(response_dict: dict):
         st.table(df)
 
 
-############# Generate Agent Response With Conversational Langchain Agent ################
-def generate_response(prompt):
-    agent1 = initialize_agent(
-            tools, 
-            llm, 
-            agent = AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, 
-            verbose = True, handle_parsing_errors = True, 
-            memory = memory)
-    message = agent1(prompt)
-    return message["output"]
-#########################################################################################
-
-
 ####################### Function to move focus to chat input ################################
 def move_focus():
     # inspect the html to determine which control to specify to receive focus (e.g. text or textarea).
@@ -233,7 +193,8 @@ def dataviz_agent(data, prompt):
     agent = create_agent(data)
     response = query_agent(agent, query)
     decoded_response = decode_response(response)
-    write_response(decoded_response)
+    final_response = decoded_response
+    return(final_response)
 ####################################################################
 
 
@@ -247,4 +208,50 @@ def decode_response(response: str) -> dict:
     Returns:
         dict: dictionary with response data""" 
     return json.loads(response)
+####################################################################
+
+    
+
+######################### Agent Toolkit #################################
+
+tools = [
+    Tool(
+        name="Google Search",
+        func=search.run,
+        description="Useful for answering questions about current events, people, places."
+    ),
+    Tool(
+        name="Wolfram Search",
+        func=wolfram.run,
+        description="Useful for answering questions about math, science, weather, date, and time."
+    ),
+    Tool(
+        name="Email Agent",
+        func= email_agent.run,
+        description="Always use when sending emails. Do Not use the Cc (cc) field for this tool unless specified in prompt."
+    ),
+    Tool(
+        name="Calendar Agent",
+        func= calendar_agent.run,
+        description="Always use for checking calendar, finding user availability, adding meetings and events."
+    ),
+    
+]
+###########################################################################################
+
+
+############# Generate Agent Response With Conversational Langchain Agent ################
+def generate_response(prompt):
+    agent1 = initialize_agent(
+            tools, 
+            llm, 
+            agent = AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, 
+            verbose = True, handle_parsing_errors = True, 
+            memory = memory)
+    message = agent1(prompt)
+    return message["output"]
+#########################################################################################
+
+
+
 
