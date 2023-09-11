@@ -28,15 +28,18 @@ img = favicon.resize((basewidth, hsize), Image.LANCZOS)
 img.save('static/resized_image.png')
 st.set_page_config(
     page_title="Alpha-Advanced-Analysis",
-    page_icon= img,
+    page_icon=img,
     layout="wide",
     initial_sidebar_state="expanded")
+
 #####################################################################
 
 
 ########### Setup api Keys ###################################
+# Retrieve secrets
 ZAPIER_CLIENT_SECRET = st.secrets["ZAPIER_CLIENT_SECRET"]
 ZAPIER_CLIENT_ID = st.secrets["ZAPIER_CLIENT_ID"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 ###############################################################
 
 
@@ -74,12 +77,16 @@ if "logger" not in st.session_state:
 api_key = openai.api_key = st.secrets["OPENAI_API_KEY"]
 csv_file = st.sidebar.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
 
-if api_key and csv_file:
-    api_key = api_key
-
-    df = pd.read_csv(csv_file)
-    st.write("Tabulated Data:")
-    st.write(df.head())
+if csv_file is not None:
+    try:
+        # Check if the uploaded file is a valid CSV file
+        df = pd.read_csv(csv_file)
+        # Process the file further
+        st.write("Tabulated Data:")
+        st.write(df.head())
+    except Exception as e:
+        # Handle the exception and provide user feedback
+        st.error(f"An error occurred while processing the uploaded file: {e}")
 
     if "generated" not in st.session_state:
         st.session_state["generated"] = []
