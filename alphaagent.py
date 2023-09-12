@@ -199,6 +199,7 @@ def dataviz_agent(data, prompt):
 
 
 #####################################################################
+
 def decode_response(response: str) -> dict:
     """This function converts the string response from the model to a dictionary object.
 
@@ -206,8 +207,13 @@ def decode_response(response: str) -> dict:
         response (str): response from the model
 
     Returns:
-        dict: dictionary with response data""" 
-    return json.loads(response)
+        dict: dictionary with response data or an empty dictionary if decoding fails"""
+    try:
+        return json.loads(response)
+    except json.JSONDecodeError as e:
+        # Handle JSON decoding error here, you can log the error or return an empty dictionary
+        print(f"JSON decoding error: {e}")
+        return {}
 ####################################################################
 
     

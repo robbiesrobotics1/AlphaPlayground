@@ -68,37 +68,33 @@ def main():
         with ChatBot:
             st.title("Chat With Alpha")
             st.text("Intelligent chatbot with access to the web \nAsk Alpha questions or upload a file to get insights")
-            #tab1 = st.tabs(["AlphaChat"])
-#############################################################################################
-
-
-######################## Tab1 - AlphaChat ###################################################
-       # with tab1:
-            st.header("AlphaChat")
+            
             st.text ("Chat History:")
             for i, message in enumerate(st.session_state.messages):
                 nkey = int(i/2)
                 if message["role"] == "user":
-                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key='chat_messages_user'+str(nkey))
+                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key='chat_messages_user_'+str(nkey))
                 else:
                     streamlit_chat.message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114", key='chat_messages_assistant_'+str(nkey))
 
         if user_content := st.chat_input("Hello, my name is Alpha. Type your questions here.", key="main_chat_input"):
-            nkey = int(len(st.session_state.messages) / 2)
-            user_key = 'chat_messages_user_' + str(nkey)
-            assistant_key = 'chat_messages_assistant_' + str(nkey)
+            with ChatBot:
+                nkey = int(len(st.session_state.messages) / 2)
+                user_key = 'chat_messages_user' + str(nkey)
+                assistant_key = 'chat_messages_assistant' + str(nkey)
 
-            streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24", key=user_key)
-            st.session_state.messages.append({"role": "user", "content": user_content})
-            assistant_content = complete_messages(0, 1)
-            streamlit_chat.message(assistant_content, avatar_style="avataaars-neutral", seed="Aneka114", key=assistant_key)
-            st.session_state.messages.append({"role": "assistant", "content": assistant_content})
+                streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24", key=user_key)
+                st.session_state.messages.append({"role": "user", "content": user_content})
+                assistant_content = complete_messages(0, 1)
+                streamlit_chat.message(assistant_content, avatar_style="avataaars-neutral", seed="Aneka114", key=assistant_key)
+                st.session_state.messages.append({"role": "assistant", "content": assistant_content})
 
+        def reset_history():
+            st.session_state["messages"] = [] 
+            
 ##############################################################################################
         authenticator.logout('Logout', 'sidebar',)
-        if st.sidebar.button("Clear Conversation", key='clear_chat_button'):
-            st.session_state.messages = []
-        move_focus()
+        st.sidebar.button("Clear Conversation", key='clear_chat_button', on_click=reset_history)
         st.sidebar.write("[Terms of Service](https://docs.google.com/document/d/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
         st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)") 
 ####################################################################################################
@@ -110,7 +106,7 @@ def main():
         ZAPIER_REDIRECT_URI = "https://calcifireconsulting.com"
 
         # Create a button in the sidebar to activate the agent
-        st.sidebar.markdown(f'[Activate Agent](https://nla.zapier.com/oauth/authorize/?response_type=code&client_id={ZAPIER_CLIENT_ID}&redirect_uri={ZAPIER_REDIRECT_URI}&scope=nla%3Aexposed_actions%3Aexecute)')    
+        st.sidebar.markdown(f'[Agent Access](https://nla.zapier.com/oauth/authorize/?response_type=code&client_id={ZAPIER_CLIENT_ID}&redirect_uri={ZAPIER_REDIRECT_URI}&scope=nla%3Aexposed_actions%3Aexecute)')    
 ###########################################################################################                           
     
     else:

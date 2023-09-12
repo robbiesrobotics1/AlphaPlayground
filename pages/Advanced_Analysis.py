@@ -1,6 +1,8 @@
 import json
 import logging
 import sys
+import datetime
+import time
 from PIL import Image
 import database as db
 import streamlit_authenticator as stauth
@@ -72,7 +74,6 @@ if "logger" not in st.session_state:
     st.session_state["logger"] = initialize_logger()
 #######################################################
 
-
 api_key = openai.api_key = st.secrets["OPENAI_API_KEY"]
 csv_file = st.sidebar.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
 
@@ -87,7 +88,7 @@ if api_key and csv_file:
     if "past" not in st.session_state:
         st.session_state["past"] = []
 
-    st.text(f"{st.session_state['name']}'s Chat History:")
+    st.text(f'Chat History For {st.session_state["name"]}')
 
     def initialize_c2p():
         st.session_state["chat"] = chat2plot(
@@ -112,7 +113,7 @@ if api_key and csv_file:
         )
 
         st.button("Reset conversation history", on_click=reset_history)
-
+   
     if "chat" not in st.session_state:
         initialize_c2p()
 
@@ -120,9 +121,11 @@ if api_key and csv_file:
 
     chat_container = st.container()
     input_container = st.container()
-
-    def submit():
-        submit_text = st.session_state["input"]
+    st.sidebar.write("[Terms of Service](https://docs.google.com/document/d/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
+    st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)")
+    
+    def submit(input_text):
+        submit_text = input_text
         st.session_state["input"] = ""
         with st.spinner(text="Waiting for Alpha's response..."):
             try:
@@ -136,7 +139,8 @@ if api_key and csv_file:
         st.session_state.generated.append(res)
 
     def get_text():
-        input_text = st.chat_input(f'{st.session_state["name"]}"''s Prompt', key="input", on_submit=submit)
+        if input_text := st.chat_input(f'{st.session_state["name"]}"''s Prompt'):
+            submit(input_text)
         return input_text
 
     with input_container:
