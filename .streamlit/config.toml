@@ -3,8 +3,10 @@ enableStaticServing = true
 
 [theme]
 base="dark"
-primaryColor="#7DF9FF"
+primaryColor="#7df9ff"
+font="monospace"
+
 
 [runner]
 # Default: true
-fastReruns = false
+fastReruns = true
