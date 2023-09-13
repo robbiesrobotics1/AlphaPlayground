@@ -84,24 +84,24 @@ def main():
             st.text("Chat History:")
             for i, message in enumerate(st.session_state.images):
                 if message["role"] == "user":
-                    st.chat_message(message["content"], is_user=True, avatar_style="avataaars", seed="24")
+                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24")
                 else:
-                    st.chat_message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
+                    streamlit_chat.message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
 
         if user_content := st.chat_input("Hello, my name is Alpha. Type your questions here.", key="main_chat_input"):
             with ChatBot:
                 st.session_state.images.append({"role": "user", "content": user_content})
                 assistant_content = generate_messages(user_content)
-                st.chat_message(user_content, is_user=True, avatar_style="avataaars", seed="24")
+                streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24")
 
                 if assistant_content and not all(url.startswith("Image generation failed") for url in assistant_content):
                     for url in assistant_content:
                         if not url.startswith("Image generation failed"):
                             st.session_state.images.append({"role": "assistant", "content": url})
-                            st.chat_message(url, is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
+                            streamlit_chat.message(url, is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
                         else:
                             st.session_state.images.append({"role": "assistant", "content": "Image generation failed. Please try again."})
-                            st.chat_message("Image generation failed. Please try again.", is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
+                            streamlit_chat.message("Image generation failed. Please try again.", is_user=False, avatar_style="avataaars-neutral", seed="Aneka114")
 
         def reset_history():
             st.session_state["images"] = []
@@ -114,7 +114,7 @@ def main():
     else:
         st.write("# Welcome to Alpha Playground! 👋")
 
-        st.chat_message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114")
+        streamlit_chat.message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114")
 
         st.markdown(
             """

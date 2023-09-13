@@ -12,6 +12,7 @@ import pandas as pd
 import streamlit as st
 from plotly.graph_objs import Figure
 from pydantic import BaseModel
+import streamlit_chat
 from streamlit_chat import message
 from chat2plot import ResponseType, chat2plot
 from chat2plot.chat2plot import Chat2Vega
@@ -176,7 +177,7 @@ else:
         st.write("# Welcome to Alpha Playground! 👋")
 
         #st.sidebar.success("Login and select the demo from above.")
-        st.chat_message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
+        streamlit_chat.message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
         
         st.markdown(
             """
