@@ -6,7 +6,6 @@ base="dark"
 primaryColor="#7df9ff"
 font="sans serif"
 
-
 [runner]
 # Default: true
 fastReruns = true
