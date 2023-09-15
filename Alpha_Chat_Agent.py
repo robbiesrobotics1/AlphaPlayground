@@ -80,8 +80,8 @@ def main():
         if user_content := st.chat_input("Hello, my name is Alpha. Type your questions here.", key="main_chat_input"):
             with ChatBot:
                 nkey = int(len(st.session_state.messages) / 2)
-                user_key = 'chat_messages_user' + str(nkey)
-                assistant_key = 'chat_messages_assistant' + str(nkey)
+                user_key = 'chat_messages_user_' + str(nkey)
+                assistant_key = 'chat_messages_assistant_' + str(nkey)
 
                 streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24", key=user_key)
                 st.session_state.messages.append({"role": "user", "content": user_content})
