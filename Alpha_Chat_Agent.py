@@ -4,8 +4,9 @@ import streamlit_chat
 from PIL import Image
 import database as db
 import streamlit.components.v1 as components
-from alphaagent import move_focus, complete_messages
+from alphaagent import complete_messages
 import streamlit_authenticator as stauth
+import time
 #############################################################################
 
 
@@ -49,11 +50,15 @@ elif st.session_state["authentication_status"] is None:
     st.sidebar.warning('Please enter your username and password') 
 #####################################################################
 
+
+######################################################################
 def main():
-    
+    global message_count  # Declare message_count as global
+    # Initialize a global message count
+    message_count = 0
 ################# Initialize Session States #######################################
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-3.5-turbo"
+        st.session_state["openai_model"] = "gpt-3.5-turbo-instruct-0914"
     if "messages" not in st.session_state:
         st.session_state.messages = []   
 ###################################################################################
@@ -68,20 +73,25 @@ def main():
         with ChatBot:
             st.title("Chat With Alpha")
             st.text("Intelligent chatbot with access to the web \nAsk Alpha questions or upload a file to get insights")
-            
             st.text ("Chat History:")
+            
+            
             for i, message in enumerate(st.session_state.messages):
-                nkey = int(i/2)
                 if message["role"] == "user":
-                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key='chat_messages_user_'+str(nkey))
+                    user_key = 'chat_messages_user_' + str(message_count)
+                    message_count += 1  # Increment the message count
+                    streamlit_chat.message(message["content"], is_user=True, avatar_style="avataaars", seed="24", key=user_key)
                 else:
-                    streamlit_chat.message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114", key='chat_messages_assistant_'+str(nkey))
+                    assistant_key = 'chat_messages_assistant_' + str(message_count)
+                    message_count += 1  # Increment the message count
+                    streamlit_chat.message(message["content"], is_user=False, avatar_style="avataaars-neutral", seed="Aneka114", key=assistant_key)
 
         if user_content := st.chat_input("Hello, my name is Alpha. Type your questions here.", key="main_chat_input"):
             with ChatBot:
-                nkey = int(len(st.session_state.messages) / 2)
-                user_key = 'chat_messages_user_' + str(nkey)
-                assistant_key = 'chat_messages_assistant_' + str(nkey)
+                # Create a unique key for user and assistant messages based on timestamp and role
+                timestamp = int(time.time() * 1000)  # Convert current time to milliseconds
+                user_key = f'chat_messages_user_{timestamp}'
+                assistant_key = f'chat_messages_assistant_{timestamp}'
 
                 streamlit_chat.message(user_content, is_user=True, avatar_style="avataaars", seed="24", key=user_key)
                 st.session_state.messages.append({"role": "user", "content": user_content})
