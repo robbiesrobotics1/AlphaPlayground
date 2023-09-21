@@ -114,7 +114,7 @@ else:
         st.write("# Welcome to Alpha Playground! 👋")
 
         #st.sidebar.success("Login and select the demo from above.")
-        streamlit_chat.message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
+        st.chat_message("ai").write("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
         
         st.markdown(
             """

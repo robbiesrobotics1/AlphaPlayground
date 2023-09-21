@@ -1,8 +1,6 @@
 import streamlit as st
 import openai
-import streamlit_chat
 from PIL import Image
-import streamlit.components.v1 as components
 from langchain import OpenAI
 import streamlit_authenticator as stauth
 import database as db
@@ -48,15 +46,18 @@ elif st.session_state["authentication_status"] is None:
 if authentication_status:
     number_of_images = st.sidebar.selectbox("Choose Number of Images",(1, 2, 3, 4))
     image_size = st.sidebar.selectbox("Choose Image Resolution",("256x256", "512x512", "1024x1024"))
-    def generate_messages(prompt):
+   
+    
+    
+    def generate_images(prompt):
         response = openai.Image.create(
             prompt=prompt,
-            n = number_of_images,
+            n=number_of_images,
             size=image_size
         )
 
         image_urls = []
-        
+
         # Check if the response contains image URLs and extract them
         if 'data' in response and len(response['data']) > 0:
             for data_item in response['data']:
@@ -64,12 +65,9 @@ if authentication_status:
                     image_urls.append(data_item['url'])
 
         if image_urls:
-            return image_urls 
+            return image_urls
         else:
             return ["Image generation failed"] * 4
-
-
-  
 
     # Initialize the chat history
     if "images" not in st.session_state:
@@ -78,9 +76,8 @@ if authentication_status:
     # Title for your Streamlit app
     st.title("Image Generation with Alpha")
 
-
-
     st.write("Chat History:")
+    
     # Logout button and clear chat button
     authenticator.logout('Logout', 'sidebar',)
     if st.sidebar.button("Clear Conversation", key='clear_chat_button'):
@@ -95,7 +92,7 @@ if authentication_status:
         st.session_state.images.append({"role": "user", "content": user_content})
         
         # Generate images based on the user's input
-        assistant_content = generate_messages(user_content)
+        assistant_content = generate_images(user_content)
 
         # Append the assistant's image responses to the chat history
         if assistant_content and not all(url.startswith("Image generation failed") for url in assistant_content):
@@ -117,51 +114,25 @@ if authentication_status:
             for i, message in enumerate(st.session_state.images):
                 message_key = f"message_{i}"  # Generate a unique key for each message
                 if message["role"] == "user":
-                    streamlit_chat.message(
-                        message["content"],
-                        is_user=True,
-                        avatar_style="avataaars",
-                        seed="24",
-                        key=message_key  # Pass the unique key here
+                    st.chat_message("human").write(
+                        message["content"] )
+                
+                elif isinstance(message["content"], str) and message["content"].startswith("http"):
+                    # Display a single image
+                    st.image(message["content"], use_column_width=False)
+                    
+                else:
+                    # Handle other message types
+                    st.chat_message("ai").write(
+                        message["content"]
                     )
-                elif message["role"] == "assistant":
-                    col1, col2, col3, col4 = st.columns(4)
-                    if isinstance(message["content"], list) and len(message["content"]) >= 4:
-                        with col1:
-                            st.image(message["content"][0], use_column_width=False)
-                        with col2:
-                            st.image(message["content"][1], use_column_width=False)
-                        with col3:
-                            st.image(message["content"][2], use_column_width=False)
-                        with col4:
-                            st.image(message["content"][3], use_column_width=False)
-                    elif isinstance(message["content"], str) and message["content"].startswith("http"):
-                        # Display a single image
-                        st.image(message["content"], use_column_width=False)
-                        # Generate a unique key for the image based on the message key
-                        image_key = f"image_{i}"
-                        st.markdown(f'<div id="{image_key}"></div>', unsafe_allow_html=True)
-                        st.markdown(f"""
-                            <script>
-                                document.getElementById("{image_key}").parentElement.parentElement.setAttribute("id", "{message_key}");
-                            </script>
-                        """, unsafe_allow_html=True)
-                    else:
-                        # Handle other message types
-                        streamlit_chat.message(
-                            message["content"],
-                            is_user=False,
-                            avatar_style="avataaars-neutral",
-                            seed="Aneka114",
-                            key=message_key  # Pass the unique key here
-                        )
 
-    # ...
+   
 
 # If the user is not authenticated
 else:
     # Display an introductory message and authentication instructions
-    streamlit_chat.message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.",
+    st.chat_message("ai").write("Hi! I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.",
                            avatar_style="avataaars-neutral", seed="Aneka114")
 
     st.markdown(

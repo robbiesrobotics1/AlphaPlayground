@@ -1,8 +1,6 @@
 import json
 import logging
 import sys
-import datetime
-import time
 from PIL import Image
 import database as db
 import streamlit_authenticator as stauth
@@ -12,8 +10,6 @@ import pandas as pd
 import streamlit as st
 from plotly.graph_objs import Figure
 from pydantic import BaseModel
-import streamlit_chat
-from streamlit_chat import message
 from chat2plot import ResponseType, chat2plot
 from chat2plot.chat2plot import Chat2Vega
 
@@ -141,14 +137,14 @@ if authentication_status:
         if st.session_state["generated"]:
             with chat_container:
                 for i in range(len(st.session_state["generated"])):
-                    message(st.session_state["past"][i], is_user=True, avatar_style="avataaars", seed="24", key=str(i) + "_user")
+                    st.chat_message("human").write(st.session_state["past"][i])
 
                     res = st.session_state["generated"][i]
 
                     if isinstance(res, str):
                         st.error(res.replace("\n", "\n\n"))
                     elif res.response_type == ResponseType.SUCCESS:
-                        message(res.explanation, is_user=False, avatar_style="avataaars-neutral", seed="Aneka114", key=str(i))
+                        st.chat_message("ai").write(res.explanation)
 
                         col1, col2 = st.columns([2, 1])
 
@@ -177,7 +173,7 @@ else:
         st.write("# Welcome to Alpha Playground! 👋")
 
         #st.sidebar.success("Login and select the demo from above.")
-        streamlit_chat.message("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
+        st.chat_message("ai").write("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
         
         st.markdown(
             """

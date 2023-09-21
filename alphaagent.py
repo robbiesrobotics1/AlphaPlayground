@@ -185,19 +185,6 @@ def complete_messages(nbegin, nend, stream=False):
             response_content = response
     return response_content
 ##############################################################################################
- 
- 
-######################################################################
-def dataviz_agent(data, prompt):
-    query = prompt
-    agent = create_agent(data)
-    response = query_agent(agent, query)
-    decoded_response = decode_response(response)
-    final_response = decoded_response
-    return(final_response)
-####################################################################
-
-
 #####################################################################
 
 
