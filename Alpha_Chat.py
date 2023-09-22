@@ -36,15 +36,14 @@ if st.session_state["authentication_status"]:
 elif st.session_state["authentication_status"] is False:
     st.sidebar.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
-    st.sidebar.warning('Please enter your username and password') 
-if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo-instruct-0914"
+    st.sidebar.warning('Please enter your username and password')  
 #####################################################################
 
 
 ####################### Create Memory ####################################
 msgs = StreamlitChatMessageHistory(key="langchain_messages")
-memory = ConversationBufferMemory(chat_memory=msgs)
+memory = ConversationBufferMemory(
+    chat_memory=msgs, return_messages=True, memory_key="chat_history", output_key="output")
 ##########################################################################
 
 ##################### Reset Chat History Button ###########################
