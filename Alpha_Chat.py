@@ -46,13 +46,18 @@ memory = ConversationBufferMemory(
     chat_memory=msgs, return_messages=True, memory_key="chat_history", output_key="output")
 ##########################################################################
 
+
+if "messages" not in st.session_state:
+        st.session_state.messages = [] 
+        
+            
 ##################### Reset Chat History Button ###########################
 def reset_history():
-        st.session_state["messages"] = [] 
+        st.session_state.messages = [] 
 ###########################################################################        
 
 ################### Setup LLM Chain ################################################
-template = """You are an AI assistant named Alpha having a conversation with st.session_state["name"]. If the user asks how you're feeling, you always respond with a new way to say your are doing great!
+template = """You are an AI assistant named Alpha having a conversation with st.session_state["name"]. If the user asks how you're feeling, you always respond with a new way to say that you are doing great!
 
 {history}
 Human: {human_input}
@@ -71,6 +76,8 @@ def main():
             st.title("Chat With Alpha")
             st.text("An intelligent chatbot with access to the web. \nAsk Alpha questions or upload a file to get insights")
             st.text ("Chat History:")
+#########################################################################################            
+            
             
         ######################## Add Default Greeting ###############################################
         if len(msgs.messages) == 0:
@@ -78,17 +85,26 @@ def main():
         ##########################################################################
 
 
-        ################### Render current messages from StreamlitChatMessageHistory ##############
+################### Render current messages from StreamlitChatMessageHistory ##############
+        
         for msg in msgs.messages:
-            st.chat_message(msg.type).write(msg.content)
+            if msg.type == "human":
+                st.chat_message("human").write(f'{st.session_state["name"]}: {msg.content}')
+                st.session_state.messages.append({"role": "user", "content": msg.content})
+            elif msg.type == "ai":
+                st.chat_message("ai").write(f"Alpha: {msg.content}")
+                st.session_state.messages.append({"role": "ai", "content": msg.content})
+        ############################################################################################
 
      ######################### If user inputs a new prompt, generate and draw a new response ##########
         if prompt := st.chat_input():
-            st.chat_message("human").write(prompt)
+            user_message = f'{st.session_state["name"]}: {prompt}'
+            st.chat_message("human").write(user_message)
             ## Note: new messages are saved to history automatically by Langchain during run ##
             with st.spinner("Alpha is thinkng..."):
                 response = llm_chain(prompt)
-                st.chat_message("ai").write(response)
+                ai_message = "Alpha: " + response
+                st.chat_message("ai").write(ai_message)
         ############################################################################################
         
         

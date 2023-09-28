@@ -12,6 +12,7 @@ import streamlit as st
 import json
 import openai
 
+
 ########### Setup api Keys ###################################
 ZAPIER_CLIENT_SECRET = st.secrets["ZAPIER_CLIENT_SECRET"]
 ZAPIER_CLIENT_ID = st.secrets["ZAPIER_CLIENT_ID"]
@@ -21,6 +22,22 @@ GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 WOLFRAM_ALPHA_APPID = st.secrets["WOLFRAM_ALPHA_APPID"]
 GOOGLE_CSE_ID = st.secrets["GOOGLE_CSE_ID"]
 ###############################################################
+
+###############################################################
+# Set this to your Zep server URL
+#ZEP_API_URL = "http://localhost:8000"
+#ZEP_API_KEY = "<your JWT token>" # optional
+
+#session_id = str(uuid4())  # This is a unique identifier for the user
+
+# Set up ZepMemory instance
+#memory = ZepMemory(
+#    session_id=session_id,
+#    url=ZEP_API_URL,
+#    memory_key="chat_history",
+#)
+###################################################################
+
 
 ################## Create Agent's Conversational Buffer Memory ###########################
 msgs = StreamlitChatMessageHistory()

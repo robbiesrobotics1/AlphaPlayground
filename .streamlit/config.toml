@@ -8,4 +8,4 @@ font="sans serif"
 
 [runner]
 # Default: true
-fastReruns = true
+fastReruns = false

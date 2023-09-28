@@ -1,7 +1,7 @@
 from alphaagent import query_agent, create_agent, write_response, decode_response
 import pandas as pd
 import streamlit as st
-import streamlit_chat
+import tabula
 from PIL import Image
 import ydata_profiling
 from streamlit_pandas_profiling import st_profile_report
@@ -57,12 +57,26 @@ if "tab4_content" not in st.session_state:
 ###################################################################################
 if authentication_status:
 
-    data = st.sidebar.file_uploader("Upload a File", type={"csv"})
+    data = st.sidebar.file_uploader("Upload a File")
     ChatBot = st.container()
     with ChatBot:
         st.title("Visualize Data With Alpha")
         st.text("Intelligent chatbot with access to your documents. \nUpload a file to get insights")
-        tab3, tab4 = st.tabs(["Data Profiler", "Insights Builder"])  
+        tab2, tab3, tab4 = st.tabs(["PDF Convert", "Data Profiler", "Insights Builder"])  
+####################################################################
+
+
+####################### PDF Convert TO CSV #############################                   
+    with tab2:
+        file = data
+        converted_file = (r"static/test.csv")
+        
+        if st.sidebar.button("Convert PDF"):
+            df = tabula.read_pdf(input_path = file, pages = "all")
+            tabula.convert_into(input_path = file, output_path = converted_file, output_format = "csv", pages = "all", stream = True)
+            st.write("Tabulated Data:")
+            st.chat_message("ai").write(df)                          
+                   
                     
     ####################### Tab 3 - Data Profiler #######################################        
     with tab3:
@@ -114,7 +128,7 @@ else:
         st.write("# Welcome to Alpha Playground! 👋")
 
         #st.sidebar.success("Login and select the demo from above.")
-        st.chat_message("ai").write("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.", avatar_style="avataaars-neutral", seed="Aneka114", key='intro_message_1')
+        st.chat_message("ai").write("Hi. I'm Alpha, your friendly intelligent assistant. To get started, enter your username and password in the left sidebar.")
         
         st.markdown(
             """
