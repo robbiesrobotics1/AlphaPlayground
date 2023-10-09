@@ -18,3 +18,4 @@ streamlit_authenticator==0.1.5
 deta
 chat2plot
 openpyxl
+pytesseract
