@@ -6,7 +6,21 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from PIL import Image
 
+# Set up page configuration and favicon
+basewidth = 600
+favicon = Image.open("static/alpha.png")
+wpercent = (basewidth / float(favicon.size[0]))
+hsize = int((float(favicon.size[1]) * float(wpercent)))
+img = favicon.resize((basewidth, hsize), Image.LANCZOS)
+img.save('static/resized_image.png')
+st.set_page_config(
+    page_title="Alpha Dashboard",
+    page_icon=":bar_chart:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # USER Authentication Creation
 users = db.fetch_all_users()
@@ -29,10 +43,9 @@ elif st.session_state["authentication_status"] is None:
 # PAGE SETUP
 #######################################
 
-st.set_page_config(page_title="Alpha Dashboard", page_icon=":bar_chart:", layout="wide")
+
 if authentication_status:
-    st.title("Alpha Dashboard")
-    st.markdown("_Prototype v0.0.2_")
+    
 
     with st.sidebar:
         st.header("Data Upload")
@@ -272,7 +285,7 @@ if authentication_status:
 
     top_left_column, top_right_column = st.columns((2, 1))
     bottom_left_column, bottom_right_column = st.columns(2)
-
+    
     with top_left_column:
         column_1, column_2, column_3, column_4 = st.columns(4)
 
@@ -314,7 +327,7 @@ if authentication_status:
 
     with bottom_right_column:
         plot_bottom_right()
-        
+    
         
 else:
         st.write("# Welcome to Alpha Playground! 👋")
