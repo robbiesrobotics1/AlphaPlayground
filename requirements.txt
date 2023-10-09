@@ -19,3 +19,4 @@ deta
 chat2plot
 openpyxl
 pytesseract
+pypdf2
