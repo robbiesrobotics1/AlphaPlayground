@@ -102,7 +102,7 @@ if authentication_status:
             )
 
             st.button("Reset conversation history", on_click=reset_history)
-            authenticator.logout('Logout', 'sidebar',) 
+            #authenticator.logout('Logout', 'sidebar',) 
         if "chat" not in st.session_state:
             initialize_c2p()
 
