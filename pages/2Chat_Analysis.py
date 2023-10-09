@@ -63,8 +63,9 @@ if "logger" not in st.session_state:
 
 # API Key setup
 api_key = openai.api_key = OPENAI_API_KEY
-csv_file = st.sidebar.file_uploader("Step1: Upload CSV File", type={"csv"})
 if authentication_status:
+    
+    csv_file = st.sidebar.file_uploader("Step1: Upload CSV File", type={"csv"})
     if api_key and csv_file:
         df = pd.read_csv(csv_file)
         st.write("Tabulated Data:")

@@ -31,14 +31,14 @@ hashed_passwords = [user["password"] for user in users]
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, "AlphaChat", "abcdef", cookie_expiry_days=1)
 name, authentication_status, username = authenticator.login("Login", "sidebar")
 
-# Authentication Status Conditionals
+############### Authentication Status Conditionals ################
 if st.session_state["authentication_status"]:
     st.write(f'Welcome *{st.session_state["name"]}*')
-elif not st.session_state["authentication_status"]:
-    st.error('Username/password is incorrect')
+elif st.session_state["authentication_status"] is False:
+    st.sidebar.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
-    st.sidebar.warning('Please enter your username and password')
-
+    st.sidebar.warning('Please enter your username and password') 
+#####################################################################
 # Initialize Session States
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo-0613"

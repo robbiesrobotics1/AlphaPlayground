@@ -33,8 +33,8 @@ name, authentication_status, username = authenticator.login("Login", "sidebar")
 # Authentication Status Conditionals
 if st.session_state["authentication_status"]:
     st.write(f'Welcome *{st.session_state["name"]}*')
-elif not st.session_state["authentication_status"]:
-    st.error('Username/password is incorrect')
+elif st.session_state["authentication_status"] is False:
+    st.sidebar.error('Username/password is incorrect')
 elif st.session_state["authentication_status"] is None:
     st.sidebar.warning('Please enter your username and password')
 
