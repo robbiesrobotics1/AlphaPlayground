@@ -13,10 +13,11 @@ hsize = int((float(favicon.size[1]) * float(wpercent)))
 img = favicon.resize((basewidth, hsize), Image.LANCZOS)
 img.save('static/resized_image.png')
 st.set_page_config(
-    page_title="Alpha-Assist",
-    page_icon= img,
+    page_title="Image Generation",
+    page_icon=":bar_chart:",
     layout="wide",
-    initial_sidebar_state="expanded")
+    initial_sidebar_state="expanded"
+)
 #####################################################################
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]

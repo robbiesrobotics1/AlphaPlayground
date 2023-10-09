@@ -23,8 +23,8 @@ hsize = int((float(favicon.size[1]) * float(wpercent)))
 img = favicon.resize((basewidth, hsize), Image.LANCZOS)
 img.save('static/resized_image.png')
 st.set_page_config(
-    page_title="Alpha-Advanced-Analysis",
-    page_icon=img,
+    page_title="Chat Analysis",
+    page_icon=":bar_chart:",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -63,7 +63,7 @@ if "logger" not in st.session_state:
 
 # API Key setup
 api_key = openai.api_key = OPENAI_API_KEY
-csv_file = st.sidebar.file_uploader("Step1: Upload CSV/XLSX/XLS File", type={"csv"})
+csv_file = st.sidebar.file_uploader("Step1: Upload CSV File", type={"csv"})
 if authentication_status:
     if api_key and csv_file:
         df = pd.read_csv(csv_file)

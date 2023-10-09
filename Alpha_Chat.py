@@ -19,7 +19,12 @@ WOLFRAM_ALPHA_APPID = st.secrets["WOLFRAM_ALPHA_APPID"]
 GOOGLE_CSE_ID = st.secrets["GOOGLE_CSE_ID"]
 ###############################################################
 
-
+st.set_page_config(
+    page_title="Alpha Chat",
+    page_icon=":bar_chart:",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 ############# USER Authentication Creation ###########################
 users = db.fetch_all_users()
 usernames = [user["key"] for user in users]
@@ -57,14 +62,15 @@ def reset_history():
 ###########################################################################        
 
 ################### Setup LLM Chain ################################################
-template = """You are an AI assistant named Alpha having a conversation with st.session_state["name"]. If the user asks how you're feeling, you always respond with a new way to say that you are doing great!
+template = """You are an AI assistant named Alpha having a conversation with a human whose username you will pull from session state. Always address humans by their username. If the user asks how you're feeling, you always respond with a new way to say that you are doing great!
 
 {history}
 Human: {human_input}
-AI: """
-prompt = PromptTemplate(input_variables=["history", "human_input"], template=template)
+AI: "Hello {username}"""
+prompt = PromptTemplate(input_variables=["history", "human_input", "username"], template=template)
 llm_chain = generate_response
 ###########################################################################################
+
 
 ####################  Main App #############################
 def main():
@@ -82,6 +88,7 @@ def main():
         ######################## Add Default Greeting ###############################################
         if len(msgs.messages) == 0:
             msgs.add_ai_message(f'Hello {st.session_state["name"]} , my name is Alpha! How can I help you?')
+            st.session_state.messages.append({"role": "ai", "content":st.session_state["name"]})
         ##########################################################################
 
 
@@ -96,7 +103,7 @@ def main():
                 st.session_state.messages.append({"role": "ai", "content": msg.content})
         ############################################################################################
 
-     ######################### If user inputs a new prompt, generate and draw a new response ##########
+    ######################### If user inputs a new prompt, generate and draw a new response ##########
         if prompt := st.chat_input():
             user_message = f'{st.session_state["name"]}: {prompt}'
             st.chat_message("human").write(user_message)
@@ -109,7 +116,10 @@ def main():
         
         
     ##############################################################################################
-        authenticator.logout('Logout', 'sidebar',)
+        # Wrap the logout form using st.form and give it a unique key
+        if st.sidebar.button("Logout"):
+            authenticator.logout('Logout', 'sidebar',)
+    
         st.sidebar.button("Clear Conversation", key='clear_chat_button', on_click=reset_history)
         st.sidebar.write("[Terms of Service](https://docs.google.com/document/d/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
         st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)") 
@@ -146,4 +156,3 @@ def main():
     ######################################################################################
 if __name__ == '__main__':
         main()                   
-#apples and banannasa

@@ -1,4 +1,4 @@
-from langchain import OpenAI
+
 from langchain.agents import create_pandas_dataframe_agent
 from langchain.utilities import WolframAlphaAPIWrapper, GoogleSearchAPIWrapper
 from langchain.agents.agent_toolkits import ZapierToolkit
@@ -39,11 +39,12 @@ GOOGLE_CSE_ID = st.secrets["GOOGLE_CSE_ID"]
 ###################################################################
 
 
-################## Create Agent's Conversational Buffer Memory ###########################
-msgs = StreamlitChatMessageHistory()
+####################### Create Memory ####################################
+msgs = StreamlitChatMessageHistory(key="langchain_messages")
 memory = ConversationBufferMemory(
     chat_memory=msgs, return_messages=True, memory_key="chat_history", output_key="output")
-##########################################################################################
+##########################################################################
+
 
 
 ############ Create LLMs (Language Models) / Agents / Special Tools  #######################
@@ -51,10 +52,10 @@ zapier = ZapierNLAWrapper()
 wolfram = WolframAlphaAPIWrapper()
 search = GoogleSearchAPIWrapper()
 toolkit = ZapierToolkit.from_zapier_nla_wrapper(zapier)
-llm = ChatOpenAI(temperature=0.7,model="gpt-3.5-turbo", streaming = True)
-llm2 = OpenAI(temperature = 0, streaming= True)
+llm = ChatOpenAI(temperature=0.7,model="gpt-4", streaming = True)
+llm2 = OpenAI(temperature = 0,model= "gpt-3.5-turbo-instruct", streaming= True)
 email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = True,  handle_parsing_errors = True, memory = memory)
-calendar_agent =  initialize_agent(toolkit.get_tools(), llm, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
+calendar_agent =  initialize_agent(toolkit.get_tools(), llm2, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
 ###########################################################################################
 
 def create_agent(filename: str):
@@ -164,7 +165,7 @@ def write_response(response_dict: dict):
     if "table" in response_dict:
         data = response_dict["table"]
         df = pd.DataFrame(data["data"], columns=data["columns"])
-        st.table(df)
+        st.dataframe(df)
 
 
 ####################### Function to move focus to chat input ################################
