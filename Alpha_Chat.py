@@ -79,7 +79,7 @@ def main():
     ################################################################################
         ChatBot = st.container()
         with ChatBot:
-            st.title("Chat With Alpha")
+            st.header("Chat With Alpha")
             st.text("An intelligent chatbot with access to the web. \nAsk Alpha questions or upload a file to get insights")
             st.text ("Chat History:")
 #########################################################################################            

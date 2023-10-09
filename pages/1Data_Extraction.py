@@ -54,7 +54,7 @@ if authentication_status:
     ChatBot = st.container()
     
     with ChatBot:
-        st.title("Visualize Data With Alpha")
+        st.header("Visualize Data With Alpha")
         st.text("Intelligent chatbot with access to your documents. \nUpload a file to get insights")
         tab2, tab3, tab4 = st.tabs(["PDF Extract", "Data Profiler", "Insights Builder"])
 

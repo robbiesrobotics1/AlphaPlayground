@@ -75,7 +75,7 @@ if authentication_status:
         st.session_state.images = []
 
     # Title for your Streamlit app
-    st.title("Image Generation with Alpha")
+    st.header("Image Generation with Alpha")
 
     st.write("Chat History:")
     

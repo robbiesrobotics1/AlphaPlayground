@@ -64,8 +64,9 @@ if "logger" not in st.session_state:
 # API Key setup
 api_key = openai.api_key = OPENAI_API_KEY
 if authentication_status:
-    
-    csv_file = st.sidebar.file_uploader("Step1: Upload CSV File", type={"csv"})
+    st.header("Alpha Chat Analysis")
+    st.text("1. Upload a .csv file to begin")
+    csv_file = st.sidebar.file_uploader("Upload CSV File", type={"csv"})
     if api_key and csv_file:
         df = pd.read_csv(csv_file)
         st.write("Tabulated Data:")
@@ -101,7 +102,7 @@ if authentication_status:
                 on_change=initialize_c2p,
             )
 
-            st.button("Reset conversation history", on_click=reset_history)
+            #st.button("Reset conversation history", on_click=reset_history)
             #authenticator.logout('Logout', 'sidebar',) 
         if "chat" not in st.session_state:
             initialize_c2p()
@@ -110,8 +111,8 @@ if authentication_status:
 
         chat_container = st.container()
         input_container = st.container()
-        st.sidebar.write("[Terms of Service](https://docs.google.com/document/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
-        st.sidebar.write("[Privacy Policy](https://docs.google.com/document/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)")
+        #st.sidebar.write("[Terms of Service](https://docs.google.com/document/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)") 
+        #st.sidebar.write("[Privacy Policy](https://docs.google.com/document/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)")
 
         def submit(input_text):
             submit_text = input_text

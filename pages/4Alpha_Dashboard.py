@@ -46,11 +46,19 @@ elif st.session_state["authentication_status"] is None:
 
 if authentication_status:
     
-
+    st.header("Alpha Auto Dashboard")
     with st.sidebar:
         st.header("Data Upload")
         uploaded_files = st.sidebar.file_uploader("Choose a file", accept_multiple_files=True, type="xlsx")
+        # Logout button and clear chat button
+        authenticator.logout('Logout', 'sidebar',)
+        if st.sidebar.button("Clear Conversation", key='clear_chat_button'):
+            st.session_state.images = []
 
+        # Links to terms of service and privacy policy
+        st.sidebar.write("[Terms of Service](https://docs.google.com/document/d/e/2PACX-1vRsnJ_liUiUnyrysB380Thgcu-jBRZ57YQgvXusDVO11F4QGe49sea5iYV1SJuaSKDbg9D6OhXDqPMr/pub)")
+        st.sidebar.write("[Privacy Policy](https://docs.google.com/document/d/e/2PACX-1vRGFn8CTVLdRdjmNJ9DPusSmiwcjfxDKO9K8yh0cyR_Zazb0kLGqv3gEoRhKOIOWxkWTOpPtUWXyeFt/pub)") 
+        
     if uploaded_files is None:
         st.info(" Upload files via the uploader", icon="ℹ️")
         st.stop()
@@ -282,7 +290,7 @@ if authentication_status:
     #######################################
     # STREAMLIT LAYOUT
     #######################################
-
+    
     top_left_column, top_right_column = st.columns((2, 1))
     bottom_left_column, bottom_right_column = st.columns(2)
     
