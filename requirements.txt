@@ -20,3 +20,4 @@ chat2plot
 openpyxl
 pytesseract
 pypdf2
+pdf2image
