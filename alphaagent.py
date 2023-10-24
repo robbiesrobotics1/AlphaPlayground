@@ -1,9 +1,9 @@
 
 from langchain.agents import create_pandas_dataframe_agent
 from langchain.utilities import WolframAlphaAPIWrapper, GoogleSearchAPIWrapper
-from langchain.agents.agent_toolkits import ZapierToolkit
-from langchain.utilities.zapier import ZapierNLAWrapper
+from langchain.prompts import ChatPromptTemplate
 from langchain.agents import Tool, AgentType, initialize_agent
+from langchain.tools.render import format_tool_to_openai_function
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI
 from langchain.memory import StreamlitChatMessageHistory, ConversationBufferMemory
@@ -14,9 +14,6 @@ import openai
 
 
 ########### Setup api Keys ###################################
-ZAPIER_CLIENT_SECRET = st.secrets["ZAPIER_CLIENT_SECRET"]
-ZAPIER_CLIENT_ID = st.secrets["ZAPIER_CLIENT_ID"]
-ZAPIER_NLA_API_KEY = st.secrets["ZAPIER_NLA_API_KEY"]
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 WOLFRAM_ALPHA_APPID = st.secrets["WOLFRAM_ALPHA_APPID"]
@@ -48,14 +45,13 @@ memory = ConversationBufferMemory(
 
 
 ############ Create LLMs (Language Models) / Agents / Special Tools  #######################
-zapier = ZapierNLAWrapper()
 wolfram = WolframAlphaAPIWrapper()
 search = GoogleSearchAPIWrapper()
-toolkit = ZapierToolkit.from_zapier_nla_wrapper(zapier)
-llm = ChatOpenAI(temperature=0.7, model="gpt-4", streaming = True)
-llm2 = OpenAI(temperature = 0, model= "gpt-3.5-turbo-instruct", streaming= True)
-email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = True,  handle_parsing_errors = True, memory = memory)
-calendar_agent =  initialize_agent(toolkit.get_tools(), llm2, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
+llm = ChatOpenAI(temperature=0.5, model="gpt-3.5-turbo-0613", streaming = True)
+#llm3 = ChatOpenAI(temperature = 0.6, model= "gpt-4-0613", streaming= True)
+llm2 = ChatOpenAI(temperature = 0, model= "gpt-3.5-turbo-0613", streaming= True)
+#email_agent = initialize_agent(toolkit.get_tools(), llm2, agent= AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION, verbose = True,  handle_parsing_errors = True, memory = memory)
+#calendar_agent =  initialize_agent(toolkit.get_tools(), llm2, agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, verbose = True, handle_parsing_errors = True, memory = memory)
 ###########################################################################################
 
 def create_agent(filename: str):
@@ -145,7 +141,7 @@ def write_response(response_dict: dict):
 
     # Check if the response is an answer.
     if "answer" in response_dict:
-        st.write(response_dict["answer"])
+        st.markdown(response_dict["answer"])
 
     # Check if the response is a bar chart.
     if "bar" in response_dict:
@@ -220,31 +216,26 @@ tools = [
         func=wolfram.run,
         description="Useful for answering questions about math, science, weather, date, and time."
     ),
-    Tool(
-        name="Email Agent",
-        func= email_agent.run,
-        description="Always use when sending emails. Do Not use the Cc (cc) field for this tool unless specified in prompt."
-    ),
-    Tool(
-        name="Calendar Agent",
-        func= calendar_agent.run,
-        description="Always use for checking calendar, finding user availability, adding meetings and events."
-    ),
+  
     
 ]
 ###########################################################################################
 
-
+###### Updated Function Calling and Tool Bindings for Langchain / OpenAI ###
+#llm_with_tools = llm.bind(functions = [format_tool_to_openai_function(t) for t in tools])
+#llm_with_tools2 = llm2.bind(functions = [format_tool_to_openai_function(t) for t in tools])
 ############# Generate Agent Response With Conversational Langchain Agent ################
 def generate_response(prompt):
     agent1 = initialize_agent(
             tools, 
             llm, 
             agent = AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION, 
-            verbose = True, handle_parsing_errors = True, 
+            verbose = True, #handle_parsing_errors = True, 
             memory = memory)
     message = agent1(prompt)
     return message["output"]
+#
+    
 #########################################################################################
 
 def decode_response(response: str) -> dict:
